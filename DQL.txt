@@ -1,0 +1,102 @@
+-- GAMESHOP EXERCISE
+
+use gameshop;
+
+SELECT customer_name FROM customers;
+SELECT * FROM customers;
+SELECT DISTINCT customer_name FROM customers;
+SELECT customer_id FROM customers WHERE customer_id >= 3;
+SELECT * FROM products WHERE price > 100;
+SELECT customer_name AS name, customer_id FROM customers;
+SELECT title, stock, price, stock*price AS stock_value FROM products;
+SELECT * FROM customers WHERE customer_name = "Amete";
+SELECT * FROM customers WHERE customer_name != "Amete";
+SELECT * FROM orders WHERE date_placed BETWEEN '2021-05-08' AND '2021-05-10';
+SELECT * FROM customers WHERE customer_name LIKE '%e';
+SELECT * FROM customers WHERE customer_name LIKE 'A%e';
+SELECT * FROM customers WHERE customer_name LIKE 't%';
+SELECT * FROM customers WHERE customer_name LIKE '%y';
+SELECT * FROM customers WHERE customer_name IN ('tg', 'Amete', 'James');
+SELECT * FROM customers WHERE email IS NULL;
+SELECT * FROM customers WHERE email IS NOT NULL;
+SELECT price, title FROM products ORDER BY price DESC;
+SELECT price, title FROM products ORDER BY price ASC;
+SELECT * FROM customers LIMIT 3;
+SELECT * FROM products ORDER BY price DESC LIMIT 4;
+SELECT * FROM products ORDER BY price ASC LIMIT 4;
+
+
+-- SAKILA EXERCISE
+
+
+USE sakila;
+
+SHOW tables;
+
+SELECT * FROM actor WHERE first_name = "John";
+SELECT * FROM actor WHERE last_name = "Neeson";
+SELECT * FROM actor WHERE actor_id % 10 = 0;
+SELECT description FROM film WHERE film_id = 100;
+SELECT * FROM film WHERE rating != "R";
+SELECT * FROM film ORDER BY length DESC LIMIT 10;
+SELECT * FROM film WHERE special_features LIKE '%Deleted Scenes%';
+SELECT * FROM film WHERE title LIKE '%horror%';
+
+
+-- BONUS EXAMPLES
+SELECT DISTINCT name FROM language ORDER BY name DESC;
+SELECT * FROM actor WHERE last_name LIKE '%son' ORDER BY first_name ASC;
+
+SELECT DISTINCT COUNT(last_name), last_name
+FROM actor
+GROUP BY last_name
+HAVING COUNT(last_name) = 1
+ORDER BY last_name DESC;
+
+
+
+-- SCHOOL DATABASE
+
+CREATE DATABASE school;
+
+USE school;
+
+CREATE TABLE students(
+Student_id INT NOT NULL AUTO_INCREMENT,
+First_name varchar(40) not null,
+Last_name varchar(40) not null,
+Age int NOT NULL,
+primary key(Student_id)
+);
+
+CREATE TABLE classes(
+Class_id INT NOT NULL AUTO_INCREMENT,
+Subject varchar(40) not null,
+Description varchar(40) not null,
+Level int NOT NULL,
+primary key(Class_id)
+);
+
+
+CREATE TABLE enrollment(
+Enrollment_id INT NOT NULL AUTO_INCREMENT,
+Student_id INT NOT NULL,
+Class_id INT NOT NULL,
+primary key(Enrollment_id),
+foreign key (Student_id) references students(Student_id),
+foreign key (Class_id) references classes(Class_id)
+);
+
+INSERT INTO students(First_name, Last_name, Age)
+Values("Joy", "James", 16),("Biruk", "Sis", 15),("Luki", "Sami", 19);
+
+INSERT INTO classes(Subject, Description , Level)
+Values("Maths", "First Class", 1),("IT", "Revision of last class", 2),("English", "writing and reading", 1);
+
+
+INSERT INTO enrollment(Student_id, Class_id)
+Values(1,1),(2,2),(3,3);
+
+SELECT *
+FROM students st
+JOIN enrollment en ON st.Student_id = en.Student_id;
